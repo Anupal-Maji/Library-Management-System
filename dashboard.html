@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Search Books</title>
+</head>
+<body>
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="search.html">Search Books</a>
+        <a href="profile.html">Profile</a>
+        <a href="index.html">Logout</a>
+    </nav>
+    <div class="container">
+        <h2>Search Books</h2>
+        <input type="text" id="query" placeholder="Enter book title...">
+        <button onclick="searchBooks()">Search</button>
+        <ul id="results"></ul>
+    </div>
+
+    <script>
+        async function searchBooks() {
+            const query = document.getElementById('query').value;
+            const response = await fetch(`http://localhost:3000/api/books?search=${query}`);
+            const books = await response.json();
+            
+            const resultsUl = document.getElementById('results');
+            resultsUl.innerHTML = '';
+            
+            books.forEach(book => {
+                const li = document.createElement('li');
+                li.textContent = `${book.title} by ${book.author} (${book.status})`;
+                resultsUl.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
